@@ -1,0 +1,39 @@
+
+spring:
+  liquibase:
+    enabled: true
+  application:
+    admin:
+      enabled: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:${server.port}/admin
+        instance:
+          metadata:
+            user.name: ${spring.security.user.name}
+            user.password: ${spring.security.user.password}
+        username: ${spring.security.user.name}
+        password: ${spring.security.user.password}
+      context-path: admin
+      ui:
+        available-languages: en
+
+  jmx:
+    enabled: true
+management:
+  server:
+    port: 9000
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+  file:
+    path: logs/spring-boot-application.log
+  pattern:
+    file: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+server:
+  port: 8080
