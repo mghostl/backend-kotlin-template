@@ -59,6 +59,7 @@ dependencies {
     // DB
     implementation("org.liquibase:liquibase-core")
     implementation("com.h2database:h2:1.4.200")
+    implementation("org.postgresql:postgresql:42.2.12")
 
     // Dev tools
     developmentOnly("org.springframework.boot:spring-boot-devtools")

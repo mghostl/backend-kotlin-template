@@ -21,6 +21,10 @@ spring:
 
   jmx:
     enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+      show-sql: true
 management:
   server:
     port: 9000
@@ -30,7 +34,7 @@ management:
         include: "*"
 
 logging:
-  level:
+#  level:
   file:
     path: logs/spring-boot-application.log
   pattern:
