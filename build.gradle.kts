@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.2.5.RELEASE"
+    id("org.springframework.boot") version "2.5.5"
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
     kotlin("jvm") version "1.3.61"
     kotlin("plugin.spring") version "1.3.61"
@@ -14,24 +14,17 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 object Version {
-    const val springAdmin = "2.3.0-SNAPSHOT"
-}
-
-val developmentOnly by configurations.creating
-configurations {
-    runtimeClasspath {
-        extendsFrom(developmentOnly)
-    }
+    const val springAdmin = "2.4.3"
 }
 
 repositories {
     mavenCentral()
     maven {
-        url = uri("http://repo.spring.io/milestone")
+        url = uri("https://repo.spring.io/milestone")
         name = "spring-milestone"
     }
     maven{
-        url = uri("http://repo.spring.io/snapshot")
+        url = uri("https://repo.spring.io/snapshot")
         name = "spring-snapshots"
     }
     maven {
@@ -62,7 +55,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.2.12")
 
     // Dev tools
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.springframework.boot:spring-boot-devtools")
 
     // Tests
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
