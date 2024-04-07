@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    username: user1
+    password: "${DB_PASS}"
+    url: jdbc:postgresql://rc1b-8lbnfh19utkvrroz.mdb.yandexcloud.net:6432/db1?targetServerType=master&ssl=true&sslmode=verify-full&sslrootcert=/home/certs/root.crt
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+

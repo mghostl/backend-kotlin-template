@@ -1,0 +1,22 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: templates
+
+    ports:
+      - "5432:5432"
+
+  template-service:
+    image: cr.yandex/crpgc24g506crakf94tc/template  # FIXME
+    ports:
+      - "8080:8080"
+    links:
+      - db

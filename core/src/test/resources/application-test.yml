@@ -1,0 +1,6 @@
+#file: noinspection SpringBootApplicationYaml
+tournament-client:
+  url: "${server.address}:${server.port}"
+  enabled: true
+server:
+  address: localhost

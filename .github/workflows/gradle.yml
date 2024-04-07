@@ -1,0 +1,73 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+
+  build-gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+        with:
+          arguments: build semver --conventional-commits
+
+  build-and-deploy-docker-image:
+    needs:
+      - build-gradle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: deploy image
+        uses: mghostl/yc-action@v1.3
+        with:
+          token: ${{ secrets.YC_TOKEN }}
+          folder-id: b1gtgt3k6im1q5rkcvig
+          cloud-id: b1gekpa8716s6r02lvdq
+          exec: |
+            yc container registry configure-docker
+            ./gradlew jib
+
+  deploy-to-k8s:
+    needs:
+      - build-and-deploy-docker-image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to k8s
+        uses: mghostl/yc-action@v1.3
+        with:
+          token: ${{ secrets.YC_TOKEN }}
+          folder-id: b1gtgt3k6im1q5rkcvig
+          cloud-id: b1gekpa8716s6r02lvdq
+          exec: |
+            export VERSION="$(./gradlew properties -q | awk  '/^version:/ {print $2}')"
+            yc managed-kubernetes cluster get-credentials --id ${{vars.CLUSTER_ID}} --external
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            kubectl apply -f deploy/k8s/namespace.yaml
+            kubectl apply -f deploy/k8s/deployment.yaml

@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: postgres
+    password: password
+    url: jdbc:postgresql://db:5432/templates
+
+  jpa:
+    hibernate:
+      ddl-auto: none

@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "tournament-client.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable tournament feign client."
+    },
+    {
+      "name": "tournament-client.url",
+      "type": "java.lang.String",
+      "description": "Tournament service's url."
+    }
+  ]
+}

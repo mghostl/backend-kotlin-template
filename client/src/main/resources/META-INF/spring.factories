@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.mghostl.template.client.configuration.TemplateClientAutoConfiguration
